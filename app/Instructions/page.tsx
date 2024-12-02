@@ -33,7 +33,7 @@ const Instructions = () => {
             <li>Ensure stable internet and choose a clean, quiet location.</li>
             <li>Grant access to your camera, microphone, and screen sharing.</li>
             <li>Be in professional attire and avoid distractions.</li>
-            <li>Provide detailed responses with examples and projects you've worked on.</li>
+            <li>Provide detailed responses with examples and projects youve worked on.</li>
             <li>Answer questions confidently and clearly.</li>
           </ul>
 

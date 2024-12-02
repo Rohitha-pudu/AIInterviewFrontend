@@ -24,9 +24,9 @@ const InterviewPage = () => {
       setMicrophonePermission(true);
       setCameraStream(camera);
       setAudioStream(audio);
-    } catch (err) {
+    } catch (err:any) {
       if (err.name === "NotAllowedError") {
-        alert("Please allow access to your camera and microphone.");
+        alert(`${err}Please allow access to your camera and microphone`);
       }
       setCameraPermission(false);
       setMicrophonePermission(false);
