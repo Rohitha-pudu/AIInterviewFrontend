@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 const InterviewPage = () => {
@@ -11,11 +11,16 @@ const InterviewPage = () => {
   const [audioStream, setAudioStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  useEffect(() => {
-    checkPermissions();
-    return () => stopStreams();
-  }, []);
+  const router = useRouter();
 
+  // Stop streams (wrapped in useCallback for dependency management)
+  const stopStreams = useCallback(() => {
+    cameraStream?.getTracks().forEach((track) => track.stop());
+    audioStream?.getTracks().forEach((track) => track.stop());
+    screenStream?.getTracks().forEach((track) => track.stop());
+  }, [cameraStream, audioStream, screenStream]);
+
+  // Check permissions for camera and microphone
   const checkPermissions = async () => {
     try {
       const camera = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -24,31 +29,33 @@ const InterviewPage = () => {
       setMicrophonePermission(true);
       setCameraStream(camera);
       setAudioStream(audio);
-    } catch (err:any) {
-      if (err.name === "NotAllowedError") {
-        alert(`${err}Please allow access to your camera and microphone`);
+    } catch (err: unknown) {
+      const error = err as Error;
+      if (error.name === "NotAllowedError") {
+        alert("Please allow access to your camera and microphone.");
       }
       setCameraPermission(false);
       setMicrophonePermission(false);
     }
   };
 
+  // Start screen sharing
   const startScreenShare = async () => {
     try {
       const screen = await navigator.mediaDevices.getDisplayMedia({ video: true });
       setScreenPermission(true);
       setScreenStream(screen);
-    } catch (err) {
+    } catch (err: unknown) {
+      const error = err as Error;
+      alert(`Screen sharing failed: ${error.message}`);
       setScreenPermission(false);
-      alert("Screen sharing is not available or was denied.");
     }
   };
 
-  const stopStreams = () => {
-    cameraStream?.getTracks().forEach((track) => track.stop());
-    audioStream?.getTracks().forEach((track) => track.stop());
-    screenStream?.getTracks().forEach((track) => track.stop());
-  };
+  useEffect(() => {
+    checkPermissions();
+    return () => stopStreams();
+  }, [stopStreams]);
 
   useEffect(() => {
     if (videoRef.current && cameraStream) {
@@ -57,18 +64,16 @@ const InterviewPage = () => {
     }
   }, [cameraStream]);
 
-  const router = useRouter();
-
   const handleStartNowClick = () => {
     router.push("/Questions");
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white p-4">
-      <div className="w-full h-full max-w-7xl bg-gray-800 rounded-xl shadow-lg p-8 flex flex-col gap-6">
+      <div className="w-full h-full max-w-screen-2xl bg-gray-800 rounded-xl shadow-lg p-8 flex flex-col gap-6">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-2">Trainee Interview</h1>
+          <h1 className="text-4xl font-bold mb-4">Trainee Interview</h1>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 h-full">
