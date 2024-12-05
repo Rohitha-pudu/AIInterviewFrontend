@@ -2,10 +2,10 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 const Instructions = () => {
-  const router = useRouter(); // Initialize the router
+  const router = useRouter(); 
 
   const handleStartNowClick = () => {
-    router.push('/InterviewStart'); // Navigate to /interviews page
+    router.push('/InterviewStart'); 
   };
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-6">
@@ -22,7 +22,6 @@ const Instructions = () => {
       <div className="w-full max-w-6xl bg-gray-800 rounded-lg p-8 flex flex-col lg:flex-row gap-8 items-start">
         {/* Video Placeholder */}
         <div className="flex-1 flex items-center justify-center bg-black rounded-lg aspect-video w-full max-h-[50vh]">
-          {/* Add the actual video or leave as a placeholder */}
         </div>
 
         {/* Instructions Section */}
@@ -50,7 +49,7 @@ const Instructions = () => {
 
           {/* Start Now Button */}
           <button
-           onClick={handleStartNowClick} // Add onClick handler
+           onClick={handleStartNowClick}
            className="mt-8 w-full bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg text-white font-medium">
             Start Now
           </button>
