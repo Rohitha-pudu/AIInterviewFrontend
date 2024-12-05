@@ -8,7 +8,8 @@ const QuestionScreen = () => {
   const [isRecording, setIsRecording] = useState(false); 
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null); 
-  const [videoChunks, setVideoChunks] = useState<Blob[]>([]); 
+  const [videoChunks, setVideoChunks] = useState<Blob[]>([]); // eslint-disable-line @typescript-eslint/no-unused-vars
+
   const [timer, setTimer] = useState(60); 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null); 
